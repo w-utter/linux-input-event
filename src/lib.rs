@@ -255,7 +255,7 @@ impl <T> Event<T> where T: From<i32> {
     fn from_key_event(input_event: &input_event) -> Option<Self> {
         let key = input_event.code;
         let val = input_event.value.into();
-        let pushed = val != 0;
+        let pushed = input_event.value != 0;
 
         Some(match key as _ {
              KEY_MENU => Event::Context(pushed),
@@ -367,8 +367,8 @@ impl <T> Event<T> where T: From<i32> {
     }
 
     fn from_abs_event(input_event: &input_event, state: &mut u8) -> Option<Self> {
-        let axis = ev.code;
-        let value = ev.val.into();
+        let axis = input_event.code;
+        let value = input_event.val.into();
 
         const POV_HOR_OFS: u8 = 0;
         const POV_VER_OFS: u8 = 1;
