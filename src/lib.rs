@@ -225,7 +225,7 @@ pub enum Event<T = i32> where T: TryFrom<i32> {
 
 use input_linux_sys::*;
 
-impl <T> Event<T> where T: From<i32> {
+impl <T> Event<T> where T: TryFrom<i32> {
     pub fn from_input_event(input_event: &input_event, state: &mut u8) -> Option<Self> {
         match input_event.type_ as _ {
             EV_ABS => Self::from_abs_event(input_event, state),
