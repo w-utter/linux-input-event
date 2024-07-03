@@ -227,7 +227,7 @@ use input_linux_sys::*;
 
 impl <T> Event<T> where T: From<i32> {
     pub fn from_input_event(input_event: &input_event, state: &mut u8) -> Option<Self> {
-        match input_event.type_ {
+        match input_event.type_ as _ {
             EV_ABS => Self::from_abs_event(input_event, state),
             EV_CNT => todo!(),
             EV_FF => None, //ignore force feedback events
@@ -254,7 +254,7 @@ impl <T> Event<T> where T: From<i32> {
 
     fn from_key_event(input_event: &input_event) -> Option<Self> {
         let key = input_event.code;
-        let val = input_event.val.into();
+        let val = input_event.value.into();
         let pushed = val != 0;
 
         Some(match key as _ {
@@ -348,9 +348,8 @@ impl <T> Event<T> where T: From<i32> {
     }
 
     fn from_rel_event(input_event: &input_event) -> Option<Self> {
-
         let axis = input_event.code;
-        let value = input_event.val.into();
+        let value = input_event.value.into();
 
         Some(match axis as _ {
             REL_X => Event::MouseX(value),
