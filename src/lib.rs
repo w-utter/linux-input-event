@@ -257,7 +257,7 @@ impl <T> Event<T> where T: From<i32> {
         let val = input_event.val.into();
         let pushed = val != 0;
 
-        Some(match key {
+        Some(match key as _ {
              KEY_MENU => Event::Context(pushed),
 
             KEY_BACK => Event::PaddleLeft(pushed),
@@ -352,7 +352,7 @@ impl <T> Event<T> where T: From<i32> {
         let axis = input_event.code;
         let value = input_event.val.into();
 
-        Some(match axis {
+        Some(match axis as _ {
             REL_X => Event::MouseX(value),
             REL_Y => Event::MouseY(value),
             REL_Z => todo!(),
@@ -380,8 +380,8 @@ impl <T> Event<T> where T: From<i32> {
         const MIC_HOR_OFS: u8 = 6;
         const MIC_VER_OFS: u8 = 7;
 
-        Some(match axis {
-            0x00..=0x0F => match axis {
+        Some(match axis as _ {
+            0x00..=0x0F => match axis as _ {
                 ABS_X => Event::JoyX(value),
                 ABS_Y => Event::JoyY(value),
                 ABS_Z => Event::JoyZ(value),
@@ -402,7 +402,7 @@ impl <T> Event<T> where T: From<i32> {
             }
             0x10..=0x17 => {
                 use std::cmp::Ordering;
-                match (axis, value.cmp(&0)) {
+                match (axis as _, value.cmp(&0)) {
                     (ABS_HAT0X, Ordering::Greater) => {
                         apply_bitmask_greater::<POV_HOR_OFS>(state);
                         Event::PovRight(true)
