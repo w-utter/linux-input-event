@@ -369,7 +369,7 @@ impl <T> Event<T> where T: From<i32> {
     fn from_abs_event(input_event: &input_event, state: &mut u8) -> Option<Self> {
         let axis = input_event.code;
         let raw_val = input_event.value;
-        let value = raw_val.try_into()?.ok();
+        let value = raw_val.try_into().ok()?;
 
         const POV_HOR_OFS: u8 = 0;
         const POV_VER_OFS: u8 = 1;
