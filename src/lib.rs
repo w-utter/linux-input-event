@@ -368,7 +368,8 @@ impl <T> Event<T> where T: From<i32> {
 
     fn from_abs_event(input_event: &input_event, state: &mut u8) -> Option<Self> {
         let axis = input_event.code;
-        let value = input_event.val.into();
+        let raw_val = input_event.value;
+        let value = raw_val.into();
 
         const POV_HOR_OFS: u8 = 0;
         const POV_VER_OFS: u8 = 1;
@@ -401,7 +402,7 @@ impl <T> Event<T> where T: From<i32> {
             }
             0x10..=0x17 => {
                 use std::cmp::Ordering;
-                match (axis as _, value.cmp(&0)) {
+                match (axis as _, raw_val.cmp(&0)) {
                     (ABS_HAT0X, Ordering::Greater) => {
                         apply_bitmask_greater::<POV_HOR_OFS>(state);
                         Event::PovRight(true)
