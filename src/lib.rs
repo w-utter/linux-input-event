@@ -1,5 +1,5 @@
 #[derive(Debug)]
-pub enum Event<T = i32> where T: From<i32> {
+pub enum Event<T = i32> where T: TryFrom<i32> {
 //// Controller unplugged.
     Disconnect,
     /// Exit / Main / Home / Mode
@@ -254,7 +254,7 @@ impl <T> Event<T> where T: From<i32> {
 
     fn from_key_event(input_event: &input_event) -> Option<Self> {
         let key = input_event.code;
-        let val = input_event.value.into();
+        let val = input_event.value.try_into().ok()?;
         let pushed = input_event.value != 0;
 
         Some(match key {
@@ -349,7 +349,7 @@ impl <T> Event<T> where T: From<i32> {
 
     fn from_rel_event(input_event: &input_event) -> Option<Self> {
         let axis = input_event.code;
-        let value = input_event.value.into();
+        let value = input_event.value.try_into().ok()?;
 
         Some(match axis as _ {
             REL_X => Event::MouseX(value),
@@ -369,7 +369,7 @@ impl <T> Event<T> where T: From<i32> {
     fn from_abs_event(input_event: &input_event, state: &mut u8) -> Option<Self> {
         let axis = input_event.code;
         let raw_val = input_event.value;
-        let value = raw_val.into();
+        let value = raw_val.try_into()?.ok();
 
         const POV_HOR_OFS: u8 = 0;
         const POV_VER_OFS: u8 = 1;
