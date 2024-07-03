@@ -349,8 +349,8 @@ impl <T> Event<T> where T: From<i32> {
 
     fn from_rel_event(input_event: &input_event) -> Option<Self> {
 
-        let axis = ev.code;
-        let value = ev.val.into();
+        let axis = input_event.code;
+        let value = input_event.val.into();
 
         Some(match axis {
             REL_X => Event::MouseX(value),
@@ -381,7 +381,7 @@ impl <T> Event<T> where T: From<i32> {
         const MIC_VER_OFS: u8 = 7;
 
         Some(match axis {
-            0x00..=0x0F => match v {
+            0x00..=0x0F => match axis {
                 ABS_X => Event::JoyX(value),
                 ABS_Y => Event::JoyY(value),
                 ABS_Z => Event::JoyZ(value),
@@ -517,7 +517,7 @@ impl <T> Event<T> where T: From<i32> {
                     _ => unreachable!(),
                 }
             }
-            unknown => panic!("unknown code: {code}"),
+            unknown => unimplemented!("unknown code: {unknown}"),
         })
     }
 }
