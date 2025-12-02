@@ -292,7 +292,7 @@ impl <T> Event<T> where T: TryFrom<i32> {
             0x139 /* BTN_TR2 */ => Event::TriggerR(val),
             0x13A /* BTN_SELECT */ => Event::MenuL(pushed),
             0x13B /* BTN_START */ => Event::MenuR(pushed),
-            0x13C /* BTN_MODE */ => Event::Exit(pushed),
+            0x13C | 0xA7 /* BTN_MODE */ => Event::Exit(pushed),
             0x13D /* BTN_THUMBL */ => Event::Joy(pushed),
             0x13E /* BTN_THUMBR */ => Event::Cam(pushed),
             0x13F /* BTN_PINKYR */ => Event::PinkyRight(pushed),
